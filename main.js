@@ -5,7 +5,7 @@ var mousePressed = false;
 var model;
 const imgSize = 28;
 //const path = 'model1';
-const path = 'data/model1';
+const path = 'data/model3';
 
 $(() => {
   init();
