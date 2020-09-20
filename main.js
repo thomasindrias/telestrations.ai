@@ -71,6 +71,8 @@ function getFrame() {
     console.log(indices);
     console.log(probs);
     console.log(names);
+
+    $('#pred').text(names[0].split('_').join(' ') + ' ' + probs[0].toFixed(3) * 100 + '% probability');
   }
 }
 
