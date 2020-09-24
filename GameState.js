@@ -1,26 +1,57 @@
 class Player {
-    constructor(name) {
-        this.name = name;
-        this.img = null;
-        this.keyword = null;
-    }
+  constructor(name) {
+    this.name = name;
+    this.img = null;
+    this.keyword = null;
+  }
 }
 
 class GameState {
-    constructor() {
+  constructor(players) {
+    this.players = players;
+    this.playerIndex = 0;
+    this.state = 0;
+  }
+
+  stateHandler() {
+    if (this.playerIndex + 1 === this.players.length)
+      this.endState();
+
+    if (this.state === 0) {
+      console.log("Draw State", this.players[this.playerIndex]);
+
+      this.playerIndex++;
+    }
+
+    if (this.state === 1) {
+      console.log("AI State");
 
     }
 
-    drawState() {
-        l
-        print()
+    if (this.state === 2) {
+      console.log("Guess State", this.players[this.playerIndex]);
+
+      this.playerIndex++;
     }
 
-    AIState() {
 
-    }
+    this.state++;
+    this.state = this.state % 3;
+  }
 
-    guessState() {
+  drawState() {
 
-    }
+  }
+
+  AIState() {
+
+  }
+
+  guessState() {
+
+  }
+
+  endState() {
+
+  }
 }
