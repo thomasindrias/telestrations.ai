@@ -1,57 +1,52 @@
 class Player {
-  constructor(name) {
-    this.name = name;
-    this.img = null;
-    this.keyword = null;
-  }
+    constructor(name) {
+        this.name = name;
+        this.img = null;
+        this.keyword = null;
+    }
 }
 
 class GameState {
-  constructor(players) {
-    this.players = players;
-    this.playerIndex = 0;
-    this.state = 0;
-  }
-
-  stateHandler() {
-    if (this.playerIndex + 1 === this.players.length)
-      this.endState();
-
-    if (this.state === 0) {
-      console.log("Draw State", this.players[this.playerIndex]);
-
-      this.playerIndex++;
+    constructor(players) {
+        this.players = players;
+        this.playerIndex = 0;
+        this.state = 0;
+        this.stateID = ['draw-state', 'ai-state', 'guess-state', 'end-state'];
     }
 
-    if (this.state === 1) {
-      console.log("AI State");
+    drawState() {
+        this.show('draw-state');
+
 
     }
 
-    if (this.state === 2) {
-      console.log("Guess State", this.players[this.playerIndex]);
+    AIState() {
+        this.show('ai-state');
 
-      this.playerIndex++;
+        // Get prediction
+        getFrame();
     }
 
+    guessState() {
+        this.show('guess-state');
 
-    this.state++;
-    this.state = this.state % 3;
-  }
+    }
 
-  drawState() {
+    endState() {
+        this.show('end-state');
+    }
 
-  }
+    show(id) {
+        // Show the chosen ID
+        this.stateID.forEach(state => {
+            if (id === state)
+                document.getElementById(state).style.setProperty("display", "block", "important");
+            else
+                document.getElementById(state).style.setProperty("display", "none", "important");
+        });
+    }
 
-  AIState() {
-
-  }
-
-  guessState() {
-
-  }
-
-  endState() {
-
-  }
+    restart() {
+        console.log("restart");
+    }
 }

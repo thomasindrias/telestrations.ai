@@ -1,23 +1,23 @@
 html,
 body {
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
 }
 
 #canvas {
-  border: 4px solid #c5c5c5;
-  margin: 0;
+    border: 4px solid #c5c5c5;
+    margin: 0;
 }
 
 #welcome-state {
-  display: block;
+    display: block;
 }
 
-
-#signup-state {
-  display: none !important;
-}
-
-#game-state {
-  display: none !important;
+#signup-state,
+#ai-state,
+#guess-state,
+#draw-state,
+#game-state,
+#end-state {
+    display: none !important;
 }
