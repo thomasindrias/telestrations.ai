@@ -36,10 +36,9 @@
                             >Add</button>
                         </div>
                     </form>
-                    <div class="d-flex">
+                    <div>
                         <!-- Players gets added here -->
-                        <ul id="players" class="d-flex flex-column">
-                        </ul>
+                        <ul id="players" class="list-group"></ul>
                     </div>
                 </div>
 
@@ -65,6 +64,7 @@
                 <!-- AI State (some type of visual loading) -->
                 <div id="ai-state">AI STATE
                   <div class="container text-center">
+                  <img id="img-pred">
                     <button type="button" class="btn btn-outline-primary" onclick="stateHandler()">Next</button>
                   </div>
                 </div>
