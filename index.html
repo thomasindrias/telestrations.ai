@@ -64,22 +64,30 @@
                 <!-- AI State (some type of visual loading) -->
                 <div id="ai-state">AI STATE
                   <div class="container text-center">
-                  <img id="img-pred">
                     <button type="button" class="btn btn-outline-primary" onclick="stateHandler()">Next</button>
                   </div>
                 </div>
 
                 <!-- Guess State -->
                 <div id="guess-state">GUESS STATE
-                  <div class="container text-center">
-                    <button type="button" class="btn btn-outline-primary" onclick="stateHandler()">Next</button>
+                  <div class="d-flex justify-content-center flex-column text-center">
+                    <div class="d-flex justify-content-center">
+                      <img id="img-pred">
+                    </div>
+                    <div class="d-flex flex-column m-2">
+                      <span>Guess what the image represent: </span>
+                      <form class="m-2" onsubmit="stateHandler(event)">
+                        <input class="form-control" type="text" placeholder="Guess here">
+                        <button type="submit" class="btn btn-outline-primary my-2">Next</button>
+                      </form>
+                    </div>
                   </div>
                 </div>
 
             <!-- Presentation -->
             <div id="end-state">END STATE
               <div class="container text-center">
-                <button type="button" class="btn btn-outline-primary" onclick="stateHandler(1)">Restart Game</button>
+                <button type="button" class="btn btn-outline-primary" onclick="stateHandler(null, 1)">Restart Game</button>
               </div>
             </div>
         </div>
