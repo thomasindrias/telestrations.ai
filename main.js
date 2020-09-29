@@ -215,7 +215,8 @@ function addPlayer(e) {
   // Getting box and ul by selecting id; 
   let input = document.getElementById("box");
   // let player = document.getElementById("players");
-  if (input.value != "") {
+
+  if (input.value != "" && !players.find(player => player.name === input.value)) {
 
     const newPlayer = new Player(input.value);
     players.push(newPlayer);
@@ -228,23 +229,29 @@ function addPlayer(e) {
       document.getElementById("start-button").disabled = false;
     }
 
-    // Creating element and adding value to it
-    $('#players').prepend('<li class="list-group-item d-flex justify-content-between align-items-center">' + input.value + '<span class="badge badge-danger badge-pill">X</span></li>');
-    // let make_li = document.createElement("LI");
-    // make_li.appendChild(document.createTextNode(input.value));
+    $('#players').prepend(`<li id="${newPlayer.name}" class="list-group-item d-flex justify-content-between align-items-center">` + input.value + `<span class="badge badge-danger badge-pill" onclick="removePlayer(this)">X</span></li>`);
 
-    // // Adding li to ul 
-    // player.appendChild(make_li);
-
-    // Reset the value of box 
     input.value = "";
 
-    // //Delete a player on click    
-    // deleteBadge.onclick = function () {
-    //     this.parentNode.removeChild(this);
-    // };
-
   }
+}
+
+function removePlayer(obj) {
+  console.log(obj.parentNode.id);
+  var name = obj.parentNode.id;
+  $('#' + name).remove();
+
+  players = players.filter(function (player) {
+    return player.name != name;
+  });
+
+  if (players.length < 3) {
+    // console.log("less than 3 players")
+    $("#start-button").addClass("disabled");
+    $("#start-button").removeClass("enabled");
+    document.getElementById("start-button").disabled = true;
+  }
+
 }
 
 function stateHandler(e = null, restart = false) {
