@@ -17,8 +17,6 @@ class GameState {
   drawState() {
     clearCanvas();
     this.show('draw-state');
-
-
   }
 
   AIState() {
@@ -33,7 +31,7 @@ class GameState {
       keyword = categories[random];
     }
 
-
+    const randomImg = Math.floor(Math.random() * 10);
     const url = 'https://api.unsplash.com/search/photos';
 
     $.ajax({
@@ -41,7 +39,7 @@ class GameState {
       method: 'GET',
       data: {
         query: keyword,
-        'per_page': 1
+        'per_page': 10
       },
       headers: {
         "Authorization": 'Client-ID ' + APIKEY
@@ -49,7 +47,7 @@ class GameState {
     }).done(data => {
       console.log(data);
       var image = document.getElementById('img-pred');
-      image.src = data.results[0].urls.small;
+      image.src = data.results[randomImg].urls.small;
 
     }).fail(err => {
       throw err;
