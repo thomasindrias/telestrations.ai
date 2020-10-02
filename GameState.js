@@ -11,16 +11,28 @@ class GameState {
     this.players = players;
     this.playerIndex = 0;
     this.state = 0;
-    this.stateID = ['draw-state', 'ai-state', 'guess-state', 'end-state'];
+    this.stateID = [
+      "draw-state",
+      "display-player-state",
+      "ai-state",
+      "guess-state",
+      "end-state",
+    ];
+  }
+
+  showPlayerState() {
+    document.getElementById("playerIndex").innerText = getCurrentPlayer();
+    this.show("display-player-state");
   }
 
   drawState() {
     clearCanvas();
-    this.show('draw-state');
+    this.showPlayerState();
+    this.show("draw-state");
   }
 
   AIState() {
-    this.show('ai-state');
+    this.show("ai-state");
 
     // Get prediction
     var keyword = getFrame();
@@ -32,54 +44,65 @@ class GameState {
     }
 
     const randomImg = Math.floor(Math.random() * 10);
-    const url = 'https://api.unsplash.com/search/photos';
+    const url = "https://api.unsplash.com/search/photos";
 
     $.ajax({
       url: url,
-      method: 'GET',
+      method: "GET",
       data: {
         query: keyword,
-        'per_page': 10
+        per_page: 10,
       },
       headers: {
-        "Authorization": 'Client-ID ' + APIKEY
-      }
-    }).done(data => {
-      console.log(data);
-      var image = document.getElementById('img-pred');
-      image.src = data.results[randomImg].urls.small;
+        Authorization: "Client-ID " + APIKEY,
+      },
+    })
+      .done((data) => {
+        console.log(data);
+        var image = document.getElementById("img-pred");
+        image.src = data.results[randomImg].urls.small;
 
-    }).fail(err => {
-      throw err;
-    });
-
+        setTimeout(() => {
+          stateHandler();
+        }, 3000);
+      })
+      .fail((err) => {
+        throw err;
+      });
   }
 
   guessState() {
-    this.show('guess-state');
-
+    this.show("guess-state");
   }
 
   endState() {
-    this.show('end-state');
+    this.show("end-state");
   }
 
   show(id) {
     // Show the chosen ID
-    this.stateID.forEach(state => {
+    this.stateID.forEach((state) => {
       if (id === state)
-        document.getElementById(state).style.setProperty("display", "block", "important");
+        document
+          .getElementById(state)
+          .style.setProperty("display", "block", "important");
       else
-        document.getElementById(state).style.setProperty("display", "none", "important");
+        document
+          .getElementById(state)
+          .style.setProperty("display", "none", "important");
     });
   }
 
   restart() {
     console.log("restart");
 
-    document.getElementById('welcome-state').style.setProperty("display", "block", "important");
-    document.getElementById('game-state').style.setProperty("display", "none", "important");
-    $('#players').empty();
+    document
+      .getElementById("welcome-state")
+      .style.setProperty("display", "block", "important");
+    document
+      .getElementById("game-state")
+      .style.setProperty("display", "none", "important");
+    $("#players").empty();
 
     this.players = [];
     this.playerIndex = 0;

@@ -21,7 +21,7 @@
 
             <!-- Welcome -->
             <div id="welcome-state" class="d-flex flex-column justify-content-center">
-                <p class="text-center">Welcome to Telestrations.ai</p>
+                <p class="text-center">Welcome to Telestrations.ai!</p>
                 <div class="container p-2 w-50">
                     <form class="d-flex justify-content-center" onsubmit="addPlayer(event)">
                         <div class="input-group">
@@ -43,15 +43,23 @@
                 </div>
 
                 <div class="container text-center">
-                    <button disabled id="start-button" type="button" class="btn btn-outline-primary disabled" onclick="stateHandler()">Start Game</button>
+                    <button disabled id="start-button" type="button" class="btn btn-outline-primary disabled" onclick="stateHandler()">Start Game!</button>
                 </div>
+            </div>
+
+            <div id="display-player-state">
+              <!-- Display players turn -->
+              <span id="playerIndex"></span>, It is your turn!
+              <button type="button" class="btn btn-outline-primary"
+                onclick="hide(event)">Ok, I'm ready!</button>
             </div>
 
             <!-- Game -->
             <div id="game-state" class="d-flex flex-column justify-content-center">
                 <!-- Canvas -->
                 <div id="draw-state" class="text-center">
-                    <span id="pred" class="font-weight-bold"></span>
+                  <div id="display-player-name">
+                    <span id="draw-keyword" class="font-weight-bold"></span>
                     <div class="d-flex justify-content-center">
                         <canvas id="canvas" width="500" height="500" class="canvas"></canvas>
                     </div>
@@ -62,9 +70,25 @@
                 </div>
 
                 <!-- AI State (some type of visual loading) -->
-                <div id="ai-state">AI STATE
-                  <div class="container text-center">
-                    <button type="button" class="btn btn-outline-primary" onclick="stateHandler()">Next</button>
+                <div id="ai-state" class="d-flex justify-content-center flex-column">
+                  <div class="d-flex justify-content-center loading-container">
+                    <div class="container loading">
+                      <div class="dot dot-1"></div>
+                      <div class="dot dot-2"></div>
+                      <div class="dot dot-3"></div>
+                    </div>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                      <defs>
+                        <filter id="goo">
+                          <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+                          <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 21 -7" />
+                        </filter>
+                      </defs>
+                    </svg>
+                  </div>
+                  <div class="d-flex justify-content-center font-weight-bold text-center">
+                    AI's guessing...
                   </div>
                 </div>
 
