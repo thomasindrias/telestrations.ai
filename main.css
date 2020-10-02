@@ -1,7 +1,13 @@
 html,
 body {
+  width: 100vw;
+  height: 100vh;
+}
+
+.game-container {
   width: 100%;
   height: 100%;
+  position: relative;
 }
 
 #canvas {
@@ -25,8 +31,8 @@ body {
 }
 
 #display-player-state {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   position: absolute;
   z-index: 999;
   background-color: white;
@@ -163,6 +169,7 @@ body {
 }
 
 @keyframes index {
+
   0%,
   100% {
     z-index: 3;

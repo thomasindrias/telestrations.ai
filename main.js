@@ -200,6 +200,11 @@ function preprocess(imgData) {
   });
 }
 
+// Save canvas as image
+function saveCanvas() {
+  return canvas.toDataURL();
+}
+
 //Clear the canvas
 function clearCanvas() {
   canvas.clear();
@@ -232,8 +237,8 @@ function addPlayer(e) {
 
     $("#players").prepend(
       `<li id="${newPlayer.name}" class="list-group-item d-flex justify-content-between align-items-center">` +
-        input.value +
-        `<span class="badge badge-danger badge-pill" onclick="removePlayer(this)">X</span></li>`
+      input.value +
+      `<span class="badge badge-danger badge-pill" onclick="removePlayer(this)">X</span></li>`
     );
 
     input.value = "";
@@ -282,7 +287,7 @@ function stateHandler(e = null, restart = false) {
   }
 
   // End state
-  if (gm.playerIndex === gm.players.length) {
+  if (gm.playerIndex === gm.players.length && gm.state !== 1) {
     console.log("End state");
     players = [];
     gm.endState();
@@ -318,13 +323,6 @@ function stateHandler(e = null, restart = false) {
   gm.state = gm.state % 3;
 }
 
-function getCurrentPlayer() {
-  if (gm) {
-    console.log(gm.players[gm.playerIndex].name);
-    return gm.players[gm.playerIndex].name;
-  }
-}
-
 function hideAndShowElementsByID(hideID, showID) {
   document
     .getElementById(hideID)
@@ -334,6 +332,6 @@ function hideAndShowElementsByID(hideID, showID) {
     .style.setProperty("display", "block", "important");
 }
 
-function hide(e) {
-  //e.parentNode.style.setProperty("display", "none", "important");
+function hide(el) {
+  el.parentNode.parentNode.style.setProperty("display", "none", "important");
 }
