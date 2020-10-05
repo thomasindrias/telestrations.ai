@@ -73,7 +73,15 @@ function getFrame() {
     console.log(probs);
     console.log(names);
 
-    return names[0].split("_").join(" ");
+    var preds = [];
+    names.forEach((name, i) => {
+      preds.push({
+        keyword: name.split("_").join(" "),
+        prob: probs[i].toFixed(3) * 100
+      });
+    });
+
+    return preds;
   }
 }
 

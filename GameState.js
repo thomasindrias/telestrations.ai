@@ -38,6 +38,7 @@ class GameState {
     } else {
       // Get previous player's keyword.
       this.players[this.playerIndex - 1].keyword = document.getElementById("input-guess").value;
+      this.players[this.playerIndex - 1].img = this.history[this.history.length - 1].img;
 
       // Push previous player into history
       this.history.push(this.players[this.playerIndex - 1]);
@@ -76,7 +77,7 @@ class GameState {
         url: url,
         method: "GET",
         data: {
-          query: bot.keyword,
+          query: bot.keyword[0].keyword,
           per_page: 10,
         },
         headers: {
@@ -111,7 +112,49 @@ class GameState {
     console.log(this.history);
 
     //TODO: 
-    // * LOOP THROUGH HISTORY TO PRESENT THEM.  
+    // * LOOP THROUGH HISTORY TO PRESENT THEM.
+    this.history.forEach((player, i) => {
+      var title = `<span class="font-weight-bold">${player.name}'s</span> turn`;
+
+      var description = `<span class="font-weight-bold">${player.name}</span>`;
+      if (i % 3 == 0)
+        description += ` got the keyword <span class="text-primary font-weight-bold">${player.keyword}</span> and drew the picture below.`;
+      else if (i % 3 == 1) {
+        var tableItems = '';
+        player.keyword.forEach((keyword, i) => {
+          console.log(keyword.prob);
+          tableItems += `
+            <tr>
+              <th scope="row">${i+1}</th>
+              <td>${keyword.keyword}</td>
+              <td>${keyword.prob}%</td>
+            </tr>
+          `;
+        });
+
+        description += ` 
+        got the drawing above and guessed 
+        <span class="text-primary font-weight-bold">${player.keyword[0].keyword}</span>. 
+        Then gave the picture below.<br>
+        The top 5 guesses are: 
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Keyword</th>
+              <th scope="col">Probability</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${tableItems}
+          </tbody>
+        </table>`;
+      } else
+        description += ` got the picture below and guessed <span class="text-primary font-weight-bold">${player.keyword}</span>.`;
+
+      var cardComponent = `<div class="card mx-auto p-2 m-2" style="width: 24rem;"><div class="card-body"><h5 class="card-title">${title}</h5><p class="card-text">${description}</p></div><img class="card-img-bottom" src="${player.img}" alt="Error, no image :("></div>`;
+      document.getElementById('presentation-cards').insertAdjacentHTML('beforeend', cardComponent);
+    });
 
     this.show("end-state");
   }
