@@ -38,6 +38,8 @@ class GameState {
     } else {
       // Get previous player's keyword.
       this.players[this.playerIndex - 1].keyword = document.getElementById("input-guess").value;
+      document.getElementById("input-guess").value = '';
+
       this.players[this.playerIndex - 1].img = this.history[this.history.length - 1].img;
 
       // Push previous player into history
@@ -122,7 +124,6 @@ class GameState {
       else if (i % 3 == 1) {
         var tableItems = '';
         player.keyword.forEach((keyword, i) => {
-          console.log(keyword.prob);
           tableItems += `
             <tr>
               <th scope="row">${i+1}</th>
@@ -182,11 +183,15 @@ class GameState {
     document
       .getElementById("game-state")
       .style.setProperty("display", "none", "important");
+
     $("#players").empty();
+
+    $("#presentation-cards").empty();
 
     document.getElementById("input-guess").value = '';
 
     this.players = [];
+    this.history = [];
     this.playerIndex = 0;
     this.state = 0;
   }
