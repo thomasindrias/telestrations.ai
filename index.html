@@ -1,137 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-        <title>Telestrations.ai</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
+  <title>Telestrations.ai</title>
 
-        <!-- CSS -->
-        <link rel="stylesheet" href="main.css" />
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
 
-        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis"></script>
-    </head>
+  <!-- CSS -->
+  <link rel="stylesheet" href="main.css" />
 
-    <body>
-        <div class="container">
-          <div class="text-center m-1">
-            <img src="./assets/telestrations.png" alt="telestrations" width="300">
-          </div>
-            <button class="modelBtn" onclick="showModel()"><h5 class="font-weight-bold">Model Info</h5></button>
-            <div class="game-container">
-              <!-- Welcome -->
-              <div id="welcome-state" class="d-flex flex-column justify-content-center">
-                    
-                  <div class="container p-2 w-50">
-                      <form class="d-flex justify-content-center" onsubmit="addPlayer(event)">
-                          <div class="input-group">
-                              <input type="text" class="form-control" placeholder="Add player..." id="box" />
-                          </div>
-                          <div class="form-group mx-2">
-                              <button 
-                              type="submit" 
-                              id="addPlayerButton"
-                              class="btn btn-primary form-control" 
-                              value="add" style="width: 10vw"
-                              >Add</button>
-                          </div>
-                      </form>
-                      <div>
-                          <!-- Players gets added here -->
-                          <ul id="players" class="list-group"></ul>
-                      </div>
-                  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis"></script>
+</head>
 
-                  <div class="container text-center">
-                      <button disabled id="start-button" type="button" class="btn btn-outline-primary disabled" onclick="stateHandler()">Start Game!</button>
-                  </div>
-              </div>
+<body>
+  <div class="container">
+    <div class="text-center m-1">
+      <img src="./assets/telestrations.png" alt="telestrations" width="300">
+    </div>
+    <button
+    id="exit-button"
+    type="button"
+    class="btn btn-danger"
+    onclick="reloadPage()"
+  >
+    Exit Game
+  </button>
+    <button class="modelBtn" onclick="showModel()">
+      <h5 class="font-weight-bold">Model Info</h5>
+    </button>
+    <div class="game-container">
+      <!-- Welcome -->
+      <div id="welcome-state" class="d-flex flex-column justify-content-center">
 
-              <div id="display-player-state" class="d-flex flex-column justify-content-center text-center pt-3">
-                <!-- Display players turn -->
-                <div class="d-flex justify-content-center my-2">
-                  <h4><span id="playerIndex" class="text-primary font-weight-bold"></span>, it is your turn!</h4>
-                </div>
-                <div class="d-flex justify-content-center my-2">
-                  <button type="button" class="btn btn-outline-primary" onclick="hide(this)">Ok, I'm ready!</button>
-                </div>
-              </div>
-
-              <!-- Game -->
-              <div id="game-state" class="d-flex flex-column justify-content-center">
-                  <!-- Canvas -->
-                  <div id="draw-state" class="text-center">
-                      <h4>Draw the word: <span id="draw-keyword" class="font-weight-bold text-primary"></span></h4>
-                      <div class="d-flex justify-content-center">
-                          <canvas id="canvas" width="500" height="500" class="canvas"></canvas>
-                      </div>
-                      <div class="mt-2">
-                          <button type="button" class="btn btn-outline-primary" onclick="stateHandler()">Submit</button>
-                          <button type="button" class="btn btn-outline-primary" onclick="clearCanvas()">Clear</button>
-                      </div>
-                  </div>
-
-                  <!-- AI State (some type of visual loading) -->
-                  <div id="ai-state" class="d-flex justify-content-center flex-column">
-                    <div class="d-flex justify-content-center loading-container">
-                      <div class="container loading">
-                        <div class="dot dot-1"></div>
-                        <div class="dot dot-2"></div>
-                        <div class="dot dot-3"></div>
-                      </div>
-                  
-                      <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-                        <defs>
-                          <filter id="goo">
-                            <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
-                            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 21 -7" />
-                          </filter>
-                        </defs>
-                      </svg>
-                    </div>
-                    <div class="d-flex justify-content-center text-center">
-                      <h4>AI's guessing...</h4>
-                    </div>
-                  </div>
-
-                  <!-- Guess State -->
-                  <div id="guess-state">
-                    <div class="d-flex justify-content-center flex-column text-center m-2">
-                      <div class="d-flex justify-content-center">
-                        <img id="img-pred">
-                      </div>
-                      <div class="d-flex flex-column m-3 font-weight-bold">
-                        <h4>Guess what the image represent with one word: </h4>
-                        <form class="m-2" onsubmit="stateHandler(event)">
-                          <input id="input-guess" class="form-control" type="text" placeholder="Guess here">
-                          <button type="submit" class="btn btn-outline-primary my-2">Next</button>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-
-              <!-- Presentation -->
-              <div id="end-state" class="d-flex justify-content-center flex-column">
-                <h4 class="container mt-5 text-center">Presentation</h4>
-                <div id="presentation-cards" class="d-flex justify-content-center flex-column">
-                </div>
-                <div class="d-flex justify-content-center text-center mt-2">
-                  <button type="button" class="btn btn-outline-primary" onclick="stateHandler(null, 1)">Restart Game</button>
-                </div>
-              </div>
+        <div class="container p-2 w-50">
+          <form class="d-flex justify-content-center" onsubmit="addPlayer(event)">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Add player..." id="box" />
             </div>
+            <div class="form-group mx-2">
+              <button type="submit" id="addPlayerButton" class="btn btn-primary form-control" value="add"
+                style="width: 10vw">Add</button>
+            </div>
+          </form>
+          <div>
+            <!-- Players gets added here -->
+            <ul id="players" class="list-group"></ul>
+          </div>
         </div>
-        <!--Bootstrap-->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+        <div class="container text-center">
+          <button disabled id="start-button" type="button" class="btn btn-outline-primary disabled"
+            onclick="stateHandler()">Start Game!</button>
+        </div>
+      </div>
+
+      <div id="display-player-state" class="d-flex flex-column justify-content-center text-center pt-3">
+        <!-- Display players turn -->
+        <div class="d-flex justify-content-center my-2">
+          <h4><span id="playerIndex" class="text-primary font-weight-bold"></span>, it is your turn!</h4>
+        </div>
+        <div class="d-flex justify-content-center my-2">
+          <button type="button" class="btn btn-outline-primary" onclick="hide(this)">Ok, I'm ready!</button>
+        </div>
+      </div>
+
+      <!-- Game -->
+      <div id="game-state" class="d-flex flex-column justify-content-center">
         <!-- Canvas -->
-        <script src="https://cdn.jsdelivr.net/npm/fabric@4.1.0/dist/fabric.min.js" integrity="sha256-462QVK8lv9WXCmeMCilVAS/yfud8jPor67CmesvAzjM=" crossorigin="anonymous"></script>
-        <script src="GameState.js"></script>
-        <script src="main.js"></script>
-    </body>
+        <div id="draw-state" class="text-center">
+          <h4>Draw the word: <span id="draw-keyword" class="font-weight-bold text-primary"></span></h4>
+          <div class="d-flex justify-content-center">
+            <canvas id="canvas" width="500" height="500" class="canvas"></canvas>
+          </div>
+          <div class="mt-2">
+            <button type="button" class="btn btn-outline-primary" onclick="stateHandler()">Submit</button>
+            <button type="button" class="btn btn-outline-primary" onclick="clearCanvas()">Clear</button>
+          </div>
+        </div>
+
+        <!-- AI State (some type of visual loading) -->
+        <div id="ai-state" class="d-flex justify-content-center flex-column">
+          <div class="d-flex justify-content-center loading-container">
+            <div class="container loading">
+              <div class="dot dot-1"></div>
+              <div class="dot dot-2"></div>
+              <div class="dot dot-3"></div>
+            </div>
+
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+              <defs>
+                <filter id="goo">
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+                  <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 21 -7" />
+                </filter>
+              </defs>
+            </svg>
+          </div>
+          <div class="d-flex justify-content-center text-center">
+            <h4>AI's guessing...</h4>
+          </div>
+        </div>
+
+        <!-- Guess State -->
+        <div id="guess-state">
+          <div class="d-flex justify-content-center flex-column text-center m-2">
+            <div class="d-flex justify-content-center">
+              <img id="img-pred">
+            </div>
+            <div class="d-flex flex-column m-3 font-weight-bold">
+              <h4>Guess what the image represent with one word: </h4>
+              <form class="m-2" onsubmit="stateHandler(event)">
+                <input id="input-guess" class="form-control" type="text" placeholder="Guess here">
+                <button type="submit" class="btn btn-outline-primary my-2">Next</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- Presentation -->
+        <div id="end-state" class="d-flex justify-content-center flex-column">
+          <h4 class="container mt-5 text-center">Presentation</h4>
+          <div id="presentation-cards" class="d-flex justify-content-center flex-column">
+          </div>
+          <div class="d-flex justify-content-center text-center mt-2">
+            <button type="button" class="btn btn-outline-primary" onclick="stateHandler(null, 1)">Restart Game</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Bootstrap-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+      crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+      integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+      crossorigin="anonymous"></script>
+    <!-- Canvas -->
+    <script src="https://cdn.jsdelivr.net/npm/fabric@4.1.0/dist/fabric.min.js"
+      integrity="sha256-462QVK8lv9WXCmeMCilVAS/yfud8jPor67CmesvAzjM=" crossorigin="anonymous"></script>
+    <script src="GameState.js"></script>
+    <script src="main.js"></script>
+</body>
+
 </html>

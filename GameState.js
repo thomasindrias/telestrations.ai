@@ -12,16 +12,13 @@ class GameState {
     this.history = [];
     this.playerIndex = 0;
     this.state = 0;
-    this.stateID = [
-      "draw-state",
-      "ai-state",
-      "guess-state",
-      "end-state",
-    ];
+    this.stateID = ["draw-state", "ai-state", "guess-state", "end-state"];
   }
 
   showPlayerState() {
-    document.getElementById("playerIndex").innerText = this.players[this.playerIndex].name;
+    document.getElementById("playerIndex").innerText = this.players[
+      this.playerIndex
+    ].name;
     document
       .getElementById("display-player-state")
       .style.setProperty("display", "block", "important");
@@ -34,22 +31,32 @@ class GameState {
     if (this.playerIndex === 0) {
       // If the first player, take a random keyword to draw
       const random = Math.floor(Math.random() * categories.length);
-      this.players[this.playerIndex].keyword = categories[random].split('_').join(' ');
+      this.players[this.playerIndex].keyword = categories[random]
+        .split("_")
+        .join(" ");
     } else {
       // Get previous player's keyword.
-      this.players[this.playerIndex - 1].keyword = document.getElementById("input-guess").value;
-      document.getElementById("input-guess").value = '';
+      this.players[this.playerIndex - 1].keyword = document.getElementById(
+        "input-guess"
+      ).value;
+      document.getElementById("input-guess").value = "";
 
-      this.players[this.playerIndex - 1].img = this.history[this.history.length - 1].img;
+      this.players[this.playerIndex - 1].img = this.history[
+        this.history.length - 1
+      ].img;
 
       // Push previous player into history
       this.history.push(this.players[this.playerIndex - 1]);
 
       // Take the keyword from the latest player (previous player)
-      this.players[this.playerIndex].keyword = this.history[this.history.length - 1].keyword;
+      this.players[this.playerIndex].keyword = this.history[
+        this.history.length - 1
+      ].keyword;
     }
 
-    document.getElementById("draw-keyword").innerText = this.players[this.playerIndex].keyword;
+    document.getElementById("draw-keyword").innerText = this.players[
+      this.playerIndex
+    ].keyword;
 
     this.show("draw-state");
   }
@@ -69,23 +76,23 @@ class GameState {
     // If player draws so bad so AI cant predict, continue with a random word
     if (bot.keyword === null) {
       const random = Math.floor(Math.random() * categories.length);
-      bot.keyword = categories[random].split('_').join(' ');
+      bot.keyword = categories[random].split("_").join(" ");
     }
 
     const randomImg = Math.floor(Math.random() * 10);
     const url = "https://api.unsplash.com/search/photos";
 
     $.ajax({
-        url: url,
-        method: "GET",
-        data: {
-          query: bot.keyword[0].keyword,
-          per_page: 10,
-        },
-        headers: {
-          Authorization: "Client-ID " + APIKEY,
-        },
-      })
+      url: url,
+      method: "GET",
+      data: {
+        query: bot.keyword[0].keyword,
+        per_page: 10,
+      },
+      headers: {
+        Authorization: "Client-ID " + APIKEY,
+      },
+    })
       .done((data) => {
         console.log(data);
         var image = document.getElementById("img-pred");
@@ -111,10 +118,10 @@ class GameState {
   }
 
   endState() {
-    console.log(this.history);
-
-    //TODO: 
-    // * LOOP THROUGH HISTORY TO PRESENT THEM.
+    document
+      .getElementById("exit-button")
+      .style.setProperty("display", "none", "important");
+    // LOOP THROUGH HISTORY TO PRESENT THEM.
     this.history.forEach((player, i) => {
       var title = `<span class="font-weight-bold">${player.name}'s</span> turn`;
 
@@ -122,11 +129,11 @@ class GameState {
       if (i % 3 == 0)
         description += ` got the keyword <span class="text-primary font-weight-bold">${player.keyword}</span> and drew the picture below.`;
       else if (i % 3 == 1) {
-        var tableItems = '';
+        var tableItems = "";
         player.keyword.forEach((keyword, i) => {
           tableItems += `
             <tr>
-              <th scope="row">${i+1}</th>
+              <th scope="row">${i + 1}</th>
               <td>${keyword.keyword}</td>
               <td>${keyword.prob}%</td>
             </tr>
@@ -154,7 +161,9 @@ class GameState {
         description += ` got the picture below and guessed <span class="text-primary font-weight-bold">${player.keyword}</span>.`;
 
       var cardComponent = `<div class="card mx-auto p-2 m-2" style="width: 24rem;"><div class="card-body"><h5 class="card-title">${title}</h5><p class="card-text">${description}</p></div><img class="card-img-bottom" src="${player.img}" alt="Error, no image :("></div>`;
-      document.getElementById('presentation-cards').insertAdjacentHTML('beforeend', cardComponent);
+      document
+        .getElementById("presentation-cards")
+        .insertAdjacentHTML("beforeend", cardComponent);
     });
 
     this.show("end-state");
@@ -165,12 +174,12 @@ class GameState {
     this.stateID.forEach((state) => {
       if (id === state)
         document
-        .getElementById(state)
-        .style.setProperty("display", "block", "important");
+          .getElementById(state)
+          .style.setProperty("display", "block", "important");
       else
         document
-        .getElementById(state)
-        .style.setProperty("display", "none", "important");
+          .getElementById(state)
+          .style.setProperty("display", "none", "important");
     });
   }
 
@@ -188,7 +197,7 @@ class GameState {
 
     $("#presentation-cards").empty();
 
-    document.getElementById("input-guess").value = '';
+    document.getElementById("input-guess").value = "";
 
     this.players = [];
     this.history = [];
