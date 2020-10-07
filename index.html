@@ -13,15 +13,19 @@
         <link rel="stylesheet" href="main.css" />
 
         <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis"></script>
     </head>
 
     <body>
         <div class="container">
-            <h1 class="text-center">Telestrations.ai</h1>
+          <div class="text-center m-1">
+            <img src="./assets/telestrations.png" alt="telestrations" width="300">
+          </div>
+            <button class="modelBtn" onclick="showModel()"><h5 class="font-weight-bold">Model Info</h5></button>
             <div class="game-container">
               <!-- Welcome -->
               <div id="welcome-state" class="d-flex flex-column justify-content-center">
-                  <p class="text-center">Welcome to Telestrations.ai!</p>
+                    
                   <div class="container p-2 w-50">
                       <form class="d-flex justify-content-center" onsubmit="addPlayer(event)">
                           <div class="input-group">
