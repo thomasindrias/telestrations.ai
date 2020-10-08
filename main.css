@@ -1,13 +1,19 @@
 html,
 body {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  min-height: 100vh;
+  /*
+  background-image: linear-gradient(white 500px, transparent),
+    url('assets/bg.png');
+  background-size: contain;
+  background-repeat: round;
+  */
 }
 
 .game-container {
   width: 100%;
   height: 100%;
-  position: relative;
+  /*position: relative;*/
 }
 
 #canvas {
@@ -30,38 +36,46 @@ body {
   display: none !important;
 }
 
+
 #display-player-state {
-  width: 100%;
-  height: 100%;
+  min-width: 100%;
+  min-height: 100%;
   position: absolute;
-  z-index: 999;
+  top: 0;
+  left: 0;
+  z-index: 998;
   background-color: white;
+  overflow: auto;
+}
+
+#img-pred {
+  max-height: 360px;
 }
 
 .badge {
   cursor: pointer;
 }
 
-.modelBtn {
-  outline: none !important;
-  background: none;
-  border: none;
-  padding: 5px;
-  border-radius: 10px;
-  color: #007bff !important;
+#modelBtn {
   position: absolute;
+  z-index: 999;
   top: 15px;
   right: 15px;
 }
 
-.modelBtn:hover {
-  background-color: #f3f3f3;
+
+#exit-button {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  display: none !important;
+  z-index: 999;
 }
 
 /* Animation by Alexandr Izumenko*/
 .loading-container {
   position: relative;
-  margin: 20%;
+  margin: 10%;
 }
 
 .loading {
@@ -95,7 +109,7 @@ body {
 }
 
 .dot-2 {
-  background-color: #10beae;
+  background-color: #106abe;
   animation: dot-2-move 2s ease infinite, index 6s -4s ease infinite;
 }
 
@@ -185,6 +199,7 @@ body {
 }
 
 @keyframes index {
+
   0%,
   100% {
     z-index: 3;
@@ -197,11 +212,4 @@ body {
   66.6% {
     z-index: 1;
   }
-}
-
-#exit-button {
-  position: absolute;
-  right: 2%;
-  bottom: 3%;
-  display: none !important;
 }

@@ -83,16 +83,16 @@ class GameState {
     const url = "https://api.unsplash.com/search/photos";
 
     $.ajax({
-      url: url,
-      method: "GET",
-      data: {
-        query: bot.keyword[0].keyword,
-        per_page: 10,
-      },
-      headers: {
-        Authorization: "Client-ID " + APIKEY,
-      },
-    })
+        url: url,
+        method: "GET",
+        data: {
+          query: bot.keyword[0].keyword,
+          per_page: 10,
+        },
+        headers: {
+          Authorization: "Client-ID " + APIKEY,
+        },
+      })
       .done((data) => {
         console.log(data);
         var image = document.getElementById("img-pred");
@@ -174,12 +174,12 @@ class GameState {
     this.stateID.forEach((state) => {
       if (id === state)
         document
-          .getElementById(state)
-          .style.setProperty("display", "block", "important");
+        .getElementById(state)
+        .style.setProperty("display", "block", "important");
       else
         document
-          .getElementById(state)
-          .style.setProperty("display", "none", "important");
+        .getElementById(state)
+        .style.setProperty("display", "none", "important");
     });
   }
 
@@ -193,11 +193,16 @@ class GameState {
       .getElementById("game-state")
       .style.setProperty("display", "none", "important");
 
-    $("#players").empty();
+    document
+      .getElementById("display-player-state")
+      .style.setProperty("display", "none", "important");
+
+    //$("#players").empty();
 
     $("#presentation-cards").empty();
 
     document.getElementById("input-guess").value = "";
+
 
     this.players = [];
     this.history = [];

@@ -16,7 +16,7 @@ $(() => {
   canvas.backgroundColor = "#ffffff";
   canvas.isDrawingMode = 0;
   canvas.freeDrawingBrush.color = "black";
-  canvas.freeDrawingBrush.width = 10;
+  canvas.freeDrawingBrush.width = 8;
   canvas.renderAll();
 
   //listeners
@@ -260,8 +260,8 @@ function addPlayer(e) {
 
     $("#players").prepend(
       `<li id="${newPlayer.name}" class="list-group-item d-flex justify-content-between align-items-center">` +
-        input.value +
-        `<span class="badge badge-danger badge-pill" onclick="removePlayer(this)">X</span></li>`
+      input.value +
+      `<span class="badge badge-danger badge-pill" onclick="removePlayer(this)">X</span></li>`
     );
 
     input.value = "";
@@ -291,20 +291,19 @@ function stateHandler(e = null, restart = false) {
   if (!gm) {
     // Start our game
     gm = new GameState([]);
-
-    document
-      .getElementById("exit-button")
-      .style.setProperty("display", "block", "important");
   }
 
   // Open game state
   if (gm.playerIndex === 0) {
     hideAndShowElementsByID("welcome-state", "game-state");
 
-    //TODO: Randomize players
+    // Show exit button
+    document
+      .getElementById("exit-button")
+      .style.setProperty("display", "block", "important");
 
     // Add players to game state
-    gm.players = players;
+    gm.players = players.sort(() => Math.random() - 0.5);
   }
 
   if (gm.players.length < 2) return;
@@ -312,15 +311,13 @@ function stateHandler(e = null, restart = false) {
   if (restart) {
     console.log("Restart Game");
 
-    //TODO: keep last round players in gm.restart
-    //gm.restart();
-    reloadPage();
+    gm.restart();
   }
 
   // End state
   if (gm.playerIndex === gm.players.length && gm.state !== 1) {
     console.log("End state");
-    players = [];
+    //players = [];
     gm.endState();
     return;
   }
@@ -364,9 +361,5 @@ function hideAndShowElementsByID(hideID, showID) {
 }
 
 function hide(el) {
-  el.parentNode.parentNode.style.setProperty("display", "none", "important");
-}
-
-function reloadPage() {
-  location.reload();
+  el.parentNode.parentNode.parentNode.style.setProperty("display", "none", "important");
 }
