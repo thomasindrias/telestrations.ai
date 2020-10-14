@@ -158,10 +158,9 @@ class GameState {
           </tbody>
         </table>`;
       } else
-        description += ` got the picture below and guessed <span class="text-primary font-weight-bold">${player.keyword}</span>.`;
+        description += ` got the picture above and guessed <span class="text-primary font-weight-bold">${player.keyword}</span>.`;
 
       var cardComponent = `<div class="card mx-auto p-2 m-2" style="width: 24rem;"><div class="card-body"><h5 class="card-title">${title}</h5><p class="card-text">${description}</p></div>${(i % 3 === 2) ? '' : `<img class="card-img-bottom" src="${player.img}" alt="Error, no image :(">`}</div>`;
-
       document
         .getElementById("presentation-cards")
         .insertAdjacentHTML("beforeend", cardComponent);
