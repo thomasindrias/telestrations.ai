@@ -83,16 +83,16 @@ class GameState {
     const url = "https://api.unsplash.com/search/photos";
 
     $.ajax({
-        url: url,
-        method: "GET",
-        data: {
-          query: bot.keyword[0].keyword,
-          per_page: 10,
-        },
-        headers: {
-          Authorization: "Client-ID " + APIKEY,
-        },
-      })
+      url: url,
+      method: "GET",
+      data: {
+        query: bot.keyword[0].keyword,
+        per_page: 10,
+      },
+      headers: {
+        Authorization: "Client-ID " + APIKEY,
+      },
+    })
       .done((data) => {
         console.log(data);
         var image = document.getElementById("img-pred");
@@ -160,7 +160,8 @@ class GameState {
       } else
         description += ` got the picture below and guessed <span class="text-primary font-weight-bold">${player.keyword}</span>.`;
 
-      var cardComponent = `<div class="card mx-auto p-2 m-2" style="width: 24rem;"><div class="card-body"><h5 class="card-title">${title}</h5><p class="card-text">${description}</p></div><img class="card-img-bottom" src="${player.img}" alt="Error, no image :("></div>`;
+      var cardComponent = `<div class="card mx-auto p-2 m-2" style="width: 24rem;"><div class="card-body"><h5 class="card-title">${title}</h5><p class="card-text">${description}</p></div>${(i % 3 === 2) ? '' : `<img class="card-img-bottom" src="${player.img}" alt="Error, no image :(">`}</div>`;
+
       document
         .getElementById("presentation-cards")
         .insertAdjacentHTML("beforeend", cardComponent);
@@ -174,12 +175,12 @@ class GameState {
     this.stateID.forEach((state) => {
       if (id === state)
         document
-        .getElementById(state)
-        .style.setProperty("display", "block", "important");
+          .getElementById(state)
+          .style.setProperty("display", "block", "important");
       else
         document
-        .getElementById(state)
-        .style.setProperty("display", "none", "important");
+          .getElementById(state)
+          .style.setProperty("display", "none", "important");
     });
   }
 
