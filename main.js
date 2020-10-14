@@ -6,7 +6,7 @@ var model;
 var gm;
 const imgSize = 28;
 //const path = 'model1';
-const path = "data/model6";
+const path = "data/model10";
 var players = [];
 const APIKEY = "y-bm_k6E6SHHkWoUXCcgPDrHRp-YhwbtwHRASagi9mM";
 
